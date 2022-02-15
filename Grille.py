@@ -12,8 +12,8 @@ class Grille:
     
 
     def __createMatrice(self, size):
-        x0 = 50
-        y0 = 50
+        x0 = 60
+        y0 = 150
         M = [[0 for i in range(size)] for j in range(size)]
         for i in range(size):
             for j in range(size):
