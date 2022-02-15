@@ -8,8 +8,8 @@ class Hexagon:
         self.y = []
         for i in range(6) :
             angle = math.radians(i*360/6)
-            self.x.append(int(x0+50*math.cos(angle)))
-            self.y.append(int(y0+50*math.sin(angle)))
+            self.x.append(int(x0+50*math.sin(angle)))
+            self.y.append(int(y0+50*math.cos(angle)))
         self.__color = color
 
     def getColor(self):
