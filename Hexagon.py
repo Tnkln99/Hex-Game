@@ -1,5 +1,5 @@
 from tkinter import *
-from variables import *
+from Variables import *
 import math
 
 class Hexagon:
@@ -14,7 +14,6 @@ class Hexagon:
             self.y.append(int(y0+hexL*math.cos(angle)))
 
         self.__color = "#FFFFFF"
-        self.__value = -1
 
 
     # Getters et Setters
@@ -28,9 +27,10 @@ class Hexagon:
     def setValue(self, value):
         self.__value = value
 
-    def getValue(self):
-        return self.__value
- 
+    def estLibre():
+        if self.getColor() == "#FFFFFF":
+            return True
+        return False
 
 
 

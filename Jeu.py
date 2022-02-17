@@ -1,5 +1,8 @@
 from Grille import *
 from tkinter import *
+#from Functions import *
+
+    
 
 size = 4
 
@@ -16,6 +19,8 @@ myCanvas.pack(pady = 100)
 
 
 FirstGrille.traceGrille(myCanvas)
+
+myCanvas.bind("<Button-1>", FirstGrille.nextTurnHuman)
         
 
       

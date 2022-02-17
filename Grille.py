@@ -1,6 +1,6 @@
 from tkinter import *
 from Hexagon import *
-from variables import *
+from Variables import *
 import math
 
 class Grille:
@@ -13,6 +13,7 @@ class Grille:
     
     #tableau pour stocker les positions des centres des hexagones
     def __createMatrice(self, size): 
+        self.__tourCount = 0
         x0 = hexL
         y0 = hexL
         M = [[0 for i in range(size)] for j in range(size)]
@@ -30,6 +31,20 @@ class Grille:
                                 fill = self.getMatrice()[i][j].getColor(),
                                 outline="#000000")
 
+    def nextTurnHuman(self,event):
+        tourCount = self.getTourCount()
+        if tourCount % 2 == 0:
+            color = "#FF0000"
+        else:
+            color = "#0000FF"
+        if self.trouverClickPoint(event.x,event.y).estLibre():
+             self.trouverClickPoint.setColor(color)
+             self.tourCountInc()
+
+
+    def trouverClickPointHuman(self, i, j):
+        return M[x][y]
+
 
     def getMatrice(self):
         return self.__matrice
@@ -37,7 +52,11 @@ class Grille:
     def getSize(self):
         return self.__size
 
+    def getTourCount(self):
+        return self.__tourCount
 
+    def tourCountInc(self):
+        self.__tourCount += 1
 
 
 
