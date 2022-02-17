@@ -32,10 +32,6 @@ class Grille:
                                 fill = self.getMatrice()[i][j].getColor(),
                                 outline="#000000")
 
-    
-
-    
-
     # Getters and Setters
 
     def getMatrice(self):
@@ -44,11 +40,8 @@ class Grille:
     def getSize(self):
         return self.__size
 
-    def getTourCount(self):
-        return self.__tourCount
 
-    def tourCountInc(self):
-        self.__tourCount += 1
+    
 
 
 
