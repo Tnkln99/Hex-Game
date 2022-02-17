@@ -5,9 +5,10 @@ import math
 
 class Grille:
 
-    def __init__(self, size):
+    def __init__(self, size, canva):
         self.__size = size
         self.__matrice = self.__createMatrice(self.__size)
+        self.GridCanvas = canva
     
 
     
@@ -33,23 +34,28 @@ class Grille:
 
     def nextTurnHuman(self,event):
         tourCount = self.getTourCount()
+        color = ""
         if tourCount % 2 == 0:
             color = "#FF0000"
         else:
             color = "#0000FF"
-        HexagoneInteresse = self.trouverClickPointHuman(event.x,event.y)
-        if HexagoneInteresse.estLibre():
-             HexagoneInteresse.setColor(color)
+        #Récuperation des points cliqée
+        pointCliquee = event.x, event.y
+        #trouver la hexagone associée aux points
+        hexCliquee = self.trouverHexagonCliqueHuman(pointCliquee)
+
+        if hexCliquee.estLibre():
+             hexCliquee.changeColor(self.GridCanvas, color)
              self.tourCountInc()
              
 
-
-    def trouverClickPointHuman(self, k, p):
+    #trouver la hexagone associée aux points cliquées
+    def trouverHexagonCliqueHuman(self, p):
         for i in range(self.getSize()):
             for j in range(self.getSize()):
-                if self.getMatrice()[i][j].containsPoint(k,p):
+                if self.getMatrice()[i][j].distance(p) <= hexL:
                     return self.getMatrice()[i][j]
-        return None
+        return False
 
     # Getters and Setters
 
