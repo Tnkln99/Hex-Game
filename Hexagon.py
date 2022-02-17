@@ -27,10 +27,18 @@ class Hexagon:
     def setValue(self, value):
         self.__value = value
 
-    def estLibre():
+
+
+    # Methodes Utils
+    def estLibre(self):
         if self.getColor() == "#FFFFFF":
             return True
         return False
+
+    def containsPoint(self,i ,j):
+        
+
+
 
 
 

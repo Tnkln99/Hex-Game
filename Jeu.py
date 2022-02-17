@@ -21,13 +21,11 @@ myCanvas.pack(pady = 100)
 FirstGrille.traceGrille(myCanvas)
 
 myCanvas.bind("<Button-1>", FirstGrille.nextTurnHuman)
+
+
         
 
       
-       
-
-
-
 Window.mainloop()
 
 

@@ -37,14 +37,21 @@ class Grille:
             color = "#FF0000"
         else:
             color = "#0000FF"
-        if self.trouverClickPoint(event.x,event.y).estLibre():
-             self.trouverClickPoint.setColor(color)
+        HexagoneInteresse = self.trouverClickPointHuman(event.x,event.y)
+        if HexagoneInteresse.estLibre():
+             HexagoneInteresse.setColor(color)
              self.tourCountInc()
+             
 
 
-    def trouverClickPointHuman(self, i, j):
-        return M[x][y]
+    def trouverClickPointHuman(self, k, p):
+        for i in range(self.getSize()):
+            for j in range(self.getSize()):
+                if self.getMatrice()[i][j].containsPoint(k,p):
+                    return self.getMatrice()[i][j]
+        return None
 
+    # Getters and Setters
 
     def getMatrice(self):
         return self.__matrice
