@@ -1,4 +1,5 @@
 from Grille import *
+#from Graph import *
 from tkinter import *
 
 
@@ -23,9 +24,51 @@ for i in range(FirstGrille.getSize()):
       
        
 
+        #self.Graph = Graph(self.size)
+
+        self.myCanvas.bind("<Button-1>", self.nextTurnHuman)
 
 
-Window.mainloop()
+    def nextTurnHuman(self,event):
+        color = ""
+        if self.getTurnCount() % 2 == 0:
+            color = "#FF0000"
+        else:
+            color = "#0000FF"
+        #Récuperation des points cliqée
+        pointCliquee = event.x, event.y
+        #trouver la hexagone associée aux points
+        if self.trouverHexagonCliqueHuman(pointCliquee)[0]:
+            hexCliquee = self.trouverHexagonCliqueHuman(pointCliquee)[1]
+            if hexCliquee.estLibre():
+                hexCliquee.changeColor(self.myCanvas, color)
+                self.incTurnCount()
+        
+    #trouver la hexagone associée aux points cliquées
+    def trouverHexagonCliqueHuman(self, p):
+        for i in range(self.FirstGrille.getSize()):
+            for j in range(self.FirstGrille.getSize()):
+                if self.FirstGrille.getMatrice()[i][j].distance(p) <= hexL:
+                    return True, self.FirstGrille.getMatrice()[i][j]
+        return False, None
+
+    def incTurnCount(self):
+        self.__turnCount += 1
+
+    def getTurnCount(self):
+        return self.__turnCount
+
+
+
+
+Jeu()
+    
+
+
+        
+
+      
+
 
 
 
