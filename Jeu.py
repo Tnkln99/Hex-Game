@@ -17,8 +17,7 @@ class Jeu:
         self.myCanvas.pack(pady = 100)
 
         self.commencer(self.myCanvas,self.Window, self.getTurnCount())
-        
-    
+          
     def commencer(self, canvas, windows, turnCount):
         self.size = 6
 
