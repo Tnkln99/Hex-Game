@@ -1,3 +1,3 @@
 
-#longuer d'une coté d4un hexagone
+#longuer d'une coté d'un hexagone
 hexL = 50
