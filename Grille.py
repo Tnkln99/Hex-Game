@@ -1,6 +1,6 @@
 from tkinter import *
 from Hexagon import *
-from Variables import *
+from variables import *
 import math
 
 class Grille:
