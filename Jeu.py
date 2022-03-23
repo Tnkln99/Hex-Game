@@ -39,16 +39,20 @@ class Jeu:
         #trouver la hexagone associée aux points
         if self.trouverHexagonCliqueHuman(pointCliquee)[0]:
             hexCliquee = self.trouverHexagonCliqueHuman(pointCliquee)[1]
+            #pointIetJ = self.trouverHexagonCliqueHuman(pointCliquee)[2]
             if hexCliquee.estLibre():
                 hexCliquee.changeColor(self.myCanvas, color)
                 self.incTurnCount()
+                #self.notreGrap.ajoutSommet(pointIetJ) 
+                #self.nextTurn()
+                
         
     #trouver la hexagone associée aux points cliquées
     def trouverHexagonCliqueHuman(self, p):
         for i in range(self.FirstGrille.getSize()):
             for j in range(self.FirstGrille.getSize()):
                 if self.FirstGrille.getMatrice()[i][j].distance(p) <= hexL:
-                    return True, self.FirstGrille.getMatrice()[i][j]
+                    return True, self.FirstGrille.getMatrice()[i][j], (i , j)
         return False, None
 
     def incTurnCount(self):
@@ -56,6 +60,9 @@ class Jeu:
 
     def getTurnCount(self):
         return self.__turnCount
+
+    def winCond(self, graph):
+        return True
 
 
 
