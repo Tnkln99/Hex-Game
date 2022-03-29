@@ -8,6 +8,8 @@ class Jeu:
     
     def __init__(self):
         self.__turnCount = 0
+        
+        self.menu()
 
         self.Window = Tk()
         self.Window.title("Hex Game")
@@ -49,15 +51,12 @@ class Jeu:
                 hexCliquee.changeColor(self.myCanvas, color)
                 self.incTurnCount()
                 self.notreGraph.ajoutSommet(color, pointIetJ) 
-                print(self.notreGraph.getGraphR())
-                #self.nextTurn()
-
         if self.notreGraph.gagnantR():
             print("rouge a gagné ")
-            # aret de jeu 
+            self.Window.destroy()
         if self.notreGraph.gagnantB():
             print("blue a gagné ")
-            # aret de jeu 
+            self.Window.destroy()
                 
         
     #trouver la hexagone associée aux points cliquées
@@ -74,9 +73,67 @@ class Jeu:
 
     def getTurnCount(self):
         return self.__turnCount
+    
+    def menu(self):
+        fenetreMenu = Tk(className='configuration')
+        fenetreMenu.resizable(width=False, height=False)
+        fenetreMenu.geometry('520x500+700+300')
+        
+        FrameNomFichier = Frame(fenetreMenu,pady=10,padx=10)
+        texteNomFichier = Label(FrameNomFichier, text="Nom d'Enregistrement : ", font="Arial 15")
+        texteNomFichier.pack(side='left')
+        fichier = Text(FrameNomFichier,font="Arial 15",width=15,height=1)
+        fichier.pack(side='right')
+        FrameNomFichier.pack()
 
-    def winCond(self, graph):
-        return True
+        FrameTaille = Frame(fenetreMenu,pady=10,padx=10)
+        texteTaille = Label(FrameTaille, text="Taille : ", font="Arial 15")
+        texteTaille.pack(side='left')
+        taille = Spinbox(FrameTaille,from_=2, to=11,font="Arial 15",width=15)
+        taille.pack(side='right')
+        FrameTaille.pack()
+        
+
+        FrameJoueur = Frame(fenetreMenu,pady=10)
+        Frame1 = Frame(FrameJoueur)
+        choix1 = [("Joueur","Joueur"),("IA","IA")]
+
+        texteJoueur1 = Label(Frame1,text="Joueur 1 : ",fg='#FF0000', font="Arial 15")
+        texteJoueur1.pack(side='left')
+
+        choix1 = [("Joueur",0),("IA",1)]
+        var1 = StringVar()
+        for text, val in choix1 :
+            rb = Radiobutton(Frame1, text=text, variable=var1, value=val, font="Arial 15")
+            # valeur par defaut : joueur 1 IA
+            if (val == 1):
+                rb.select()
+            rb.pack(side='right')
+        Frame1.pack()
+
+        Frame2 = Frame(FrameJoueur, pady=10)
+        texteJoueur2 = Label(Frame2,text="Joueur 2 : ", fg='#0000FF',font="Arial 15")
+        texteJoueur2.pack(side='left')
+
+        choix2 = [("Joueur",0),("IA",1)]
+        var2 = StringVar()
+        for text, val in choix2:
+            rb2 = Radiobutton(Frame2, text=text, variable=var2, value=val, font="Arial 15")
+            # valeur par defaut : joueur 2 Joueur
+            if (val == 0):
+                rb2.select()
+            rb2.pack(side='right')
+        Frame2.pack()
+        FrameJoueur.pack()
+
+        b = Button(fenetreMenu,text="Jouer",command=lambda: self.enregistreJeu(fichier.get()))
+        b.pack()
+        
+
+    def enregistreJeu(self, nomFichier):
+        return "cliqué"
+    
+    
 
 
 
