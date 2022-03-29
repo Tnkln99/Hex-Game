@@ -1,5 +1,5 @@
 from tkinter import *
-from variables import *
+from Variables import *
 import math
 
 class Hexagon:

@@ -37,9 +37,10 @@ class Jeu:
         #Récuperation des points cliqée
         pointCliquee = event.x, event.y
         #trouver la hexagone associée aux points
-        if self.trouverHexagonCliqueHuman(pointCliquee)[0]:
-            hexCliquee = self.trouverHexagonCliqueHuman(pointCliquee)[1]
-            #pointIetJ = self.trouverHexagonCliqueHuman(pointCliquee)[2]
+        hexagonCliquee = self.trouverHexagonCliqueHuman(pointCliquee)
+        if hexagonCliquee[0]:
+            hexCliquee = hexagonCliquee[1]
+            #pointIetJ = hexagonCliquee[2]
             if hexCliquee.estLibre():
                 hexCliquee.changeColor(self.myCanvas, color)
                 self.incTurnCount()
@@ -53,7 +54,7 @@ class Jeu:
             for j in range(self.FirstGrille.getSize()):
                 if self.FirstGrille.getMatrice()[i][j].distance(p) <= hexL:
                     return True, self.FirstGrille.getMatrice()[i][j], (i , j)
-        return False, None
+        return False, None, (-1, -1)
 
     def incTurnCount(self):
         self.__turnCount += 1
