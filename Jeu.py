@@ -1,6 +1,5 @@
 from Grille import *
 from tkinter import *
-#from Functions import *
 
 
 class Jeu:
