@@ -1,6 +1,11 @@
+from time import sleep
 from Grille import *
 from tkinter import *
 from Graph import *
+from tkinter import messagebox
+from os import listdir
+from os.path import isfile, join
+import re
 #from Functions import *
 
 
@@ -8,8 +13,12 @@ class Jeu:
     
     def __init__(self):
         self.__turnCount = 0
+        self.__saveName = ""
+        
+        self.__saves = []
         
         self.menu()
+        
 
         self.Window = Tk()
         self.Window.title("Hex Game")
@@ -49,6 +58,7 @@ class Jeu:
             pointIetJ = hexagonCliquee[2]
             if hexCliquee.estLibre():
                 hexCliquee.changeColor(self.myCanvas, color)
+                self.writeToSave(pointIetJ)
                 self.incTurnCount()
                 self.notreGraph.ajoutSommet(color, pointIetJ) 
         if self.notreGraph.gagnantR():
@@ -75,6 +85,8 @@ class Jeu:
         return self.__turnCount
     
     def menu(self):
+        self.__saves = self.getSaves()
+        print(self.__saves)
         fenetreMenu = Tk(className='configuration')
         fenetreMenu.resizable(width=False, height=False)
         fenetreMenu.geometry('520x500+700+300')
@@ -125,13 +137,95 @@ class Jeu:
             rb2.pack(side='right')
         Frame2.pack()
         FrameJoueur.pack()
+        
+        FrameSaves = Frame(FrameJoueur, pady=10)
+        FrameSaves.pack(side = 'top')
+        
+        Frame3 = Frame(FrameSaves, pady=10)
+        savesLabel = Label(FrameSaves,text= "Saves:",fg='#FF0000', font="Arial 15")
+        savesLabel.pack(side='top')
+        
+        for i in range(len(self.__saves)):
+            buttonSave = Button(Frame3,text=self.__saves[i],command=lambda : self.ouvrirSave(self.__saves[i]))
+            buttonSave.pack(side='top')
+        Frame3.pack()
+        FrameSaves.pack()
+            
+        
+        
 
-        b = Button(fenetreMenu,text="Jouer",command=lambda: self.enregistreJeu(fichier.get()))
+        b = Button(fenetreMenu,text="Jouer",command=lambda : self.mainMenuMethod(fenetreMenu,fichier.get(1.0, "end-1c")))
         b.pack()
         
 
-    def enregistreJeu(self, nomFichier):
-        return "cliqué"
+    def mainMenuMethod(self,menu, nomFichier):
+        if(nomFichier ==""):
+            messagebox.showinfo("ERROR", "Vous devez chosir un valid nom d'enregistrement")
+        else:
+            nom_save = "saves/" + nomFichier + ".txt"
+            print(nom_save)
+            f = open(nom_save, "a")
+            self.__saveName = nom_save
+    
+    def ouvrirSave(self,fileName):
+        WindowSave = Tk()
+        WindowSave.title("Hex Game")
+        WindowSave.geometry("1000x1000")
+        WindowSave.config(background='#FFFFFF')
+
+        CanvasSave = Canvas(WindowSave, width=1100, height=1100, bg="#FFFFFF")
+        CanvasSave.pack(pady = 100)
+        turnCount = 0
+        with open("saves/"+fileName,'r') as f:
+            line = f.readlines()
+            
+            parsedLine = re.split(':|\n', line)
+            
+            ix = int(int(line[0]) / self.size)
+            jx = line[0] % self.size
+            
+            iy = int(int(line[2]) / self.size)
+            jy = line[2] % self.size
+                    
+            if turnCount % 2 == 0:
+                color = "#FF0000"
+                self.joueSave(ix,jx,WindowSave,CanvasSave,turnCount,color)
+            else:
+                color = "#0000FF"
+                self.joueSave(iy,jy,WindowSave,CanvasSave,turnCount,color)
+            sleep(2)
+            turnCount += 1
+        f.close()
+        WindowSave.destroy()
+        
+    def joueSave(self,i,j,WindowSave,CanvasSave,color):
+        GrilleSave = Grille(self.size, CanvasSave)
+        GrilleSave.traceGrille(self.myCanvas)
+
+        GrilleSave.getMatrice()[i][j].changeColor(CanvasSave,color)
+        sleep(2)
+
+        WindowSave.mainloop()
+            
+            
+        
+        
+    def writeToSave(self,x):
+        if self.__saveName =="":
+            messagebox.showinfo("ERROR", "Vous devez chosir les parametres de la menu premierement, fermez et relancer le jeu!")
+            self.Window.destroy()
+        else:
+            f = open(self.__saveName, "a")
+            if self.__turnCount%2==0:
+                f.write(str(x)+":")
+            else: 
+                f.write(str(x)+"\n")
+        f.close()
+            
+           
+    def getSaves(self):
+        saveFiles = [f for f in listdir("saves/") if isfile(join("saves/", f))]
+        return saveFiles
     
     
 
@@ -139,14 +233,4 @@ class Jeu:
 
 
 Jeu()
-    
-
-
-        
-
-      
-
-
-
-
 
