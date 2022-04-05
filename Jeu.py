@@ -5,7 +5,7 @@ from Graph import *
 from tkinter import messagebox
 from os import listdir
 from os.path import isfile, join
-import re
+from functools import partial
 #from Functions import *
 
 
@@ -80,13 +80,10 @@ class Jeu:
 
     def incTurnCount(self):
         self.__turnCount += 1
-
-    def getTurnCount(self):
-        return self.__turnCount
     
     def menu(self):
         self.__saves = self.getSaves()
-        print(self.__saves)
+        #print(self.__saves)
         fenetreMenu = Tk(className='configuration')
         fenetreMenu.resizable(width=False, height=False)
         fenetreMenu.geometry('520x500+700+300')
@@ -145,9 +142,11 @@ class Jeu:
         savesLabel = Label(FrameSaves,text= "Saves:",fg='#FF0000', font="Arial 15")
         savesLabel.pack(side='top')
         
-        for i in range(len(self.__saves)):
-            buttonSave = Button(Frame3,text=self.__saves[i],command=lambda : self.ouvrirSave(self.__saves[i]))
+        for i in self.__saves:
+            print(i)
+            buttonSave = Button(Frame3,text= i,command=lambda i = i: self.ouvrirSave(i))
             buttonSave.pack(side='top')
+            #fenetreMenu.update()
         Frame3.pack()
         FrameSaves.pack()
             
@@ -163,52 +162,72 @@ class Jeu:
             messagebox.showinfo("ERROR", "Vous devez chosir un valid nom d'enregistrement")
         else:
             nom_save = "saves/" + nomFichier + ".txt"
-            print(nom_save)
+            #print(nom_save)
             f = open(nom_save, "a")
             self.__saveName = nom_save
-    
+            menu.destroy()
+            
+            
     def ouvrirSave(self,fileName):
+        print(fileName)
         WindowSave = Tk()
-        WindowSave.title("Hex Game")
+        WindowSave.title("Saved Game")
         WindowSave.geometry("1000x1000")
         WindowSave.config(background='#FFFFFF')
 
         CanvasSave = Canvas(WindowSave, width=1100, height=1100, bg="#FFFFFF")
         CanvasSave.pack(pady = 100)
-        turnCount = 0
+        listI_J = []
         with open("saves/"+fileName,'r') as f:
             line = f.readlines()
-            
-            parsedLine = re.split(':|\n', line)
-            
-            ix = int(int(line[0]) / self.size)
-            jx = line[0] % self.size
-            
-            iy = int(int(line[2]) / self.size)
-            jy = line[2] % self.size
-                    
-            if turnCount % 2 == 0:
-                color = "#FF0000"
-                self.joueSave(ix,jx,WindowSave,CanvasSave,turnCount,color)
-            else:
-                color = "#0000FF"
-                self.joueSave(iy,jy,WindowSave,CanvasSave,turnCount,color)
-            sleep(2)
-            turnCount += 1
-        f.close()
-        WindowSave.destroy()
-        
-    def joueSave(self,i,j,WindowSave,CanvasSave,color):
+            for l in line:
+                updatedL = l.rstrip(l[-1]).split(':')
+                print(updatedL)
+                ix = int(int(updatedL[0]) / self.size)
+                jx = int(updatedL[0]) % self.size
+                
+                print("ix : " + str(ix) + " jx : " + str(jx))
+                listI_J.append((ix,jx))
+                try:
+                    iy = int(int(updatedL[1]) / self.size)
+                    jy = int(updatedL[1]) % self.size
+                    print("iy : " ,iy , " jy : " , jy)
+                    listI_J.append((iy,jy))
+                except:
+                    print("no second move")
+                                
         GrilleSave = Grille(self.size, CanvasSave)
-        GrilleSave.traceGrille(self.myCanvas)
-
-        GrilleSave.getMatrice()[i][j].changeColor(CanvasSave,color)
-        sleep(2)
-
-        WindowSave.mainloop()
+        GrilleSave.traceGrille(CanvasSave)
+        #CanvasSave.bind("<Button-1>", lambda event : self.ClickSave(buttonPressed))
+        cpt = 0
+        while cpt < len(listI_J):
+            if(cpt%2 != 0):
+                color = "#0000FF"
+                p = listI_J[cpt][0]
+                k = listI_J[cpt][1]
+                GrilleSave.getMatrice()[k][p].changeColor(CanvasSave,color)
+                print("if: ",k,p)
+                sleep(0.5)
+            else:
+                try:
+                    color = "#FF0000"
+                    p = listI_J[cpt][0]
+                    k = listI_J[cpt][1]
+                    print("else: ",k,p)
+                    GrilleSave.getMatrice()[k][p].changeColor(CanvasSave,color) 
+                    sleep(0.5) 
+                except:
+                    print("no second move")
+            WindowSave.update()
+            cpt += 1
+        #self.joueSave(listI_J,CanvasSave)
             
-            
+       
         
+        
+    
+    def ClickSave(self,buttonPressed):
+        return not buttonPressed
         
     def writeToSave(self,x):
         if self.__saveName =="":
@@ -227,6 +246,8 @@ class Jeu:
         saveFiles = [f for f in listdir("saves/") if isfile(join("saves/", f))]
         return saveFiles
     
+    def getTurnCount(self):
+        return self.__turnCount
     
 
 
