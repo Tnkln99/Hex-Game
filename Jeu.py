@@ -23,10 +23,10 @@ class Jeu:
 
         self.Window = Tk()
         self.Window.title("Hex Game")
-        self.Window.geometry("1000x1000")
+        self.Window.geometry("1400x1400")
         self.Window.config(background='#FFFFFF')
 
-        self.myCanvas = Canvas(self.Window, width=1100, height=1100, bg="#FFFFFF")
+        self.myCanvas = Canvas(self.Window, width=1400, height=1400, bg="#FFFFFF")
         self.myCanvas.pack(pady = 100)
         self.Window.withdraw()
 
@@ -55,7 +55,9 @@ class Jeu:
                 hexCliquee.changeColor(self.myCanvas, color)
                 self.writeToSave(pointIetJ)
                 self.incTurnCount()
-                self.notreGraph.ajoutSommet(color, pointIetJ) 
+                self.notreGraph.ajoutSommet(color, pointIetJ)
+                print(self.notreGraph.getGraphB())
+                print(self.notreGraph.getGraphR())
         if self.notreGraph.gagnantR():
             print("rouge a gagné ")
             self.Window.destroy()
