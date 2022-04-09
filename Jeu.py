@@ -6,6 +6,7 @@ from tkinter import messagebox
 from os import listdir
 from os.path import isfile, join
 from functools import partial
+from Variables import *
 #from Functions import *
 
 
@@ -20,7 +21,7 @@ class Jeu:
         
         self.menu()
         
-
+        #self.longueur = hexL * 2 * self.size
         self.Window = Tk()
         self.Window.title("Hex Game")
         self.Window.geometry("1400x1400")
@@ -34,6 +35,7 @@ class Jeu:
 
           
     def commencer(self):
+        self.Window.config(cursor="dot red")
         self.myCanvas.bind("<Button-1>", self.nextTurnHuman)
         self.Window.mainloop()
             
@@ -42,8 +44,10 @@ class Jeu:
         color = ""
         if self.getTurnCount() % 2 == 0:
             color = "#FF0000"
+            self.Window.config(cursor="dot blue")
         else:
             color = "#0000FF"
+            self.Window.config(cursor="dot red")
         #Récuperation des points cliqée
         pointCliquee = event.x, event.y
         #trouver la hexagone associée aux points
@@ -56,13 +60,13 @@ class Jeu:
                 self.writeToSave(pointIetJ)
                 self.incTurnCount()
                 self.notreGraph.ajoutSommet(color, pointIetJ)
-                print(self.notreGraph.getGraphB())
-                print(self.notreGraph.getGraphR())
-        if self.notreGraph.gagnantR():
-            print("rouge a gagné ")
+                #print(self.notreGraph.getGraphB())
+                #print(self.notreGraph.getGraphR())
+        if self.notreGraph.gagnant('R'):
+            messagebox.showinfo("Victoire","Le joueur rouge a gagné.")
             self.Window.destroy()
-        if self.notreGraph.gagnantB():
-            print("blue a gagné ")
+        if self.notreGraph.gagnant('B'):
+            messagebox.showinfo("Victoire","Le joueur bleu a gagné.")
             self.Window.destroy()
                 
         

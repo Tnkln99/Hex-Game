@@ -42,15 +42,16 @@ class Graph:
     
     
     def ajoutSommet(self, couleur, x): # couleur Bleu ou Rouge 
+
         if (couleur == "#FF0000"): #rouge
             self.__graphR[x] = []
         
-#converir l'indice k en deux coordonnes (x,y), pour verifier les depassements
+            #converir l'indice k en deux coordonnes (x,y), pour verifier les depassements
             i = int(x / self.__size)
             j = x % self.__size
 
 
-#pour chaque voisin possible, on verifie le depassment, si c bon on cherche si il appartient a liste des keys de grapheB / grapheR
+            #pour chaque voisin possible, on verifie le depassment, si c'est bon on cherche s'il appartient a liste des keys de grapheB / grapheR
 
             if x in self.__graphR[self.__Ra]:
                 self.__graphR[x].append(self.__Ra)
@@ -61,7 +62,7 @@ class Graph:
 
             v = (i-1)*self.__size+j  #reconvertir en indice unidimensionnel
     
-            if i-1 > 0 and v in self.__graphR.keys():#ajouter les voisins dans les deux sens
+            if i-1 >= 0 and v in self.__graphR.keys():#ajouter les voisins dans les deux sens
                 self.__graphR[x].append(v)
                 self.__graphR[v].append(x)
 
@@ -73,7 +74,7 @@ class Graph:
 
             v = i*self.__size+j-1
 
-            if j-1 > 0 and v in self.__graphR.keys():
+            if j-1 >= 0 and v in self.__graphR.keys():
                 self.__graphR[x].append(v)
                 self.__graphR[v].append(x)
 
@@ -85,13 +86,13 @@ class Graph:
 
             v = (i-1)*self.__size+j+1
 
-            if j+1 < self.__size and i-1 > 0 and v in self.__graphR.keys():
+            if j+1 < self.__size and i-1 >= 0 and v in self.__graphR.keys():
                 self.__graphR[x].append(v)
                 self.__graphR[v].append(x)
 
             v = (i+1)*self.__size+j-1
 
-            if i+1 < self.__size and j-1 > 0 and v in self.__graphR.keys():
+            if i+1 < self.__size and j-1 >= 0 and v in self.__graphR.keys():
                 self.__graphR[x].append(v)
                 self.__graphR[v].append(x)
 
@@ -113,7 +114,7 @@ class Graph:
 
             v = (i-1)*self.__size+j
 
-            if i-1 > 0 and v in self.__graphB.keys():
+            if i-1 >= 0 and v in self.__graphB.keys():
                 self.__graphB[x].append(v)
                 self.__graphB[v].append(x)
 
@@ -125,7 +126,7 @@ class Graph:
 
             v = i*self.__size+j-1
 
-            if j-1 > 0 and v in self.__graphB.keys():
+            if j-1 >= 0 and v in self.__graphB.keys():
                 self.__graphB[x].append(v)
                 self.__graphB[v].append(x)
 
@@ -137,13 +138,13 @@ class Graph:
 
             v = (i-1)*self.__size+j+1
 
-            if j+1 < self.__size and i-1 > 0 and v in self.__graphB.keys():
+            if j+1 < self.__size and i-1 >= 0 and v in self.__graphB.keys():
                 self.__graphB[x].append(v)
                 self.__graphB[v].append(x)
 
             v = (i+1)*self.__size+j-1
 
-            if i+1 < self.__size and j-1 > 0 and v in self.__graphB.keys():
+            if i+1 < self.__size and j-1 >= 0 and v in self.__graphB.keys():
                 self.__graphB[x].append(v)
                 self.__graphB[v].append(x)
         else:
@@ -151,65 +152,51 @@ class Graph:
 
 
 
-    def gagnantB(self):
-        # Use BFS to check path between s and d
-        # Mark all the vertices as not visited
+    def gagnant(self, color):
+        # initialise tous les sommets comme non visité
         visited =[False]*(self.__size * self.__size + 2)
 
-         # Create a queue for BFS
+         # creation de notre file
         queue=[]
 
-            # Mark the source node as visited and enqueue it
-        queue.append(self.__Ba)
-        visited[self.__Ba] = True
+        # marquer le point de départ
+        if color == 'B':
+            queue.append(self.__Ba)
+            visited[self.__Ba] = True
+        if color == 'R':
+            queue.append(self.__Ra)
+            visited[self.__Ra] = True
 
         while queue:
      
-            #Dequeue a vertex from queue
+            #defiler
             n = queue.pop(0)
 
-                # If this adjacent node is the destination node,
-                # then return true
-            if n == self.__Bb:
-                return True
+            if color == 'B':
+                # si sommet adjacence est le destination alors retourner True
+                if n == self.__Bb:
+                    return True
+         
+                #  Else, continue 
+                for i in self.__graphB[n]:
+                    if visited[i] == False and i in self.__graphB.keys():
+                        queue.append(i)
+                        visited[i] = True
+
+            if color == 'R':
+                # si sommet adjacence est le destination alors retourner True
+                if n == self.__Rb:
+                    return True
      
-                #  Else, continue to do BFS
-            for i in self.__graphB[n]:
-                if visited[i] == False and i in self.__graphB.keys():
-                    queue.append(i)
-                    visited[i] = True
-             # If BFS is complete without visited d
+                #  Else, continue 
+                for i in self.__graphR[n]:
+                    if visited[i] == False and i in self.__graphR.keys():
+                        queue.append(i)
+                        visited[i] = True
+
         return False
 
-    def gagnantR(self):
-        # Use BFS to check path between s and d
-        # Mark all the vertices as not visited
-        visited =[False]*(self.__size * self.__size+2)
-
-         # Create a queue for BFS
-        queue=[]
-
-            # Mark the source node as visited and enqueue it
-        queue.append(self.__Ra)
-        visited[self.__Ra] = True
-
-        while queue:
-     
-            #Dequeue a vertex from queue
-            n = queue.pop(0)
-
-            # If this adjacent node is the destination node,
-            # then return true
-            if n == self.__Rb:
-                return True
-     
-            #  Else, continue to do BFS
-            for i in self.__graphR[n]:
-                if visited[i] == False and i in self.__graphR.keys():
-                    queue.append(i)
-                    visited[i] = True
-             # If BFS is complete without visited d
-        return False
+    
 
 
              
