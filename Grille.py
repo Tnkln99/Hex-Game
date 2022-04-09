@@ -15,12 +15,12 @@ class Grille:
     #tableau pour stocker les positions des centres des hexagones
     def __createMatrice(self, size): 
         self.__tourCount = 0
-        x0 = hexL
-        y0 = hexL
+        x0 = 50
+        y0 = 50
         M = [[0 for i in range(size)] for j in range(size)]
         for i in range(size):
             for j in range(size):
-                M[i][j] = Hexagon(x0+i*hexL*math.sqrt(3)+j*(hexL/2)*math.sqrt(3) ,y0+j*(hexL*1.5))
+                M[i][j] = Hexagon(x0+i*hexL*math.sqrt(3)+j*(hexL/2)*math.sqrt(3) ,y0+j*(hexL*1.5),size)
         return M
 
     def traceGrille(self, canvasGrille):

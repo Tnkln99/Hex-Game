@@ -4,14 +4,15 @@ import math
 
 class Hexagon:
 
-    def __init__(self, x0, y0):
+    def __init__(self, x0, y0,sizeCote):
         self.x = []
         self.y = []
+        self.sizeCote = hexL
         # calculer les 6 sommetes d'une hexagione à partir de son centre
         for i in range(6) :
             angle = math.radians(i*360/6)
-            self.x.append(int(x0+hexL*math.sin(angle)))
-            self.y.append(int(y0+hexL*math.cos(angle)))
+            self.x.append(int(x0+self.sizeCote*math.sin(angle)))
+            self.y.append(int(y0+self.sizeCote*math.cos(angle)))
 
         self.__color = "#FFFFFF"
         self.__centre = x0, y0

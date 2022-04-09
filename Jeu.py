@@ -12,6 +12,7 @@ from functools import partial
 class Jeu:
     
     def __init__(self):
+        self.size = None
         self.__turnCount = 0
         self.__saveName = ""
         
@@ -27,21 +28,15 @@ class Jeu:
 
         self.myCanvas = Canvas(self.Window, width=1100, height=1100, bg="#FFFFFF")
         self.myCanvas.pack(pady = 100)
+        self.Window.withdraw()
 
-        self.commencer(self.myCanvas,self.Window, self.getTurnCount())
+        self.commencer()
 
           
-    def commencer(self, canvas, windows, turnCount):
-        self.size = 6
-
-        self.notreGraph = Graph(self.size) # initialize de graphe
-
-        self.FirstGrille = Grille(self.size, self.myCanvas)
-        self.FirstGrille.traceGrille(self.myCanvas)
-
+    def commencer(self):
         self.myCanvas.bind("<Button-1>", self.nextTurnHuman)
-
         self.Window.mainloop()
+            
 
     def nextTurnHuman(self,event):
         color = ""
@@ -77,13 +72,9 @@ class Jeu:
                     x = j * self.FirstGrille.getSize() + i
                     return True, self.FirstGrille.getMatrice()[i][j], x
         return False, None, (-1, -1)
-
-    def incTurnCount(self):
-        self.__turnCount += 1
     
     def menu(self):
         self.__saves = self.getSaves()
-        #print(self.__saves)
         fenetreMenu = Tk(className='configuration')
         fenetreMenu.resizable(width=False, height=False)
         fenetreMenu.geometry('520x500+700+300')
@@ -143,8 +134,7 @@ class Jeu:
         savesLabel.pack(side='top')
         
         for i in self.__saves:
-            print(i)
-            buttonSave = Button(Frame3,text= i,command=lambda i = i: self.ouvrirSave(i))
+            buttonSave = Button(Frame3,text= i[2:],command=lambda i = i: self.ouvrirSave(i))
             buttonSave.pack(side='top')
             #fenetreMenu.update()
         Frame3.pack()
@@ -153,23 +143,43 @@ class Jeu:
         
         
 
-        b = Button(fenetreMenu,text="Jouer",command=lambda : self.mainMenuMethod(fenetreMenu,fichier.get(1.0, "end-1c")))
+        b = Button(fenetreMenu,text="Jouer",command=lambda : self.playGame(fenetreMenu,fichier.get(1.0, "end-1c"),taille.get())) 
         b.pack()
         
 
-    def mainMenuMethod(self,menu, nomFichier):
+    def playGame(self,menu, nomFichier, taille):
+        #print(taille)
         if(nomFichier ==""):
             messagebox.showinfo("ERROR", "Vous devez chosir un valid nom d'enregistrement")
+        elif int(taille) > 11 or int(taille) < 2 or taille == None:
+            messagebox.showinfo("ERROR", "Vous devez chosir une taille entre 2 et 11")
         else:
-            nom_save = "saves/" + nomFichier + ".txt"
-            #print(nom_save)
+            nom_save = "saves/" + str(taille) + "/" + nomFichier + ".txt"
             f = open(nom_save, "a")
             self.__saveName = nom_save
+            self.size = int(taille)
+            self.notreGraph = Graph(self.size) # initialize de graphe
+            self.FirstGrille = Grille(self.size, self.myCanvas)
+            self.FirstGrille.traceGrille(self.myCanvas)
+            self.Window.update()
+            self.Window.deiconify()
             menu.destroy()
             
             
+    def writeToSave(self,x):
+        if self.__saveName =="":
+            messagebox.showinfo("ERROR", "Vous devez chosir les parametres de la menu premierement, fermez et relancer le jeu!")
+        else:
+            f = open(self.__saveName, "a")
+            if self.__turnCount%2==0:
+                f.write(str(x)+":")
+            else: 
+                f.write(str(x)+"\n")
+        f.close()
+                     
     def ouvrirSave(self,fileName):
-        print(fileName)
+        sizeFile = fileName.split("/")[0] 
+        self.size = int(sizeFile)
         WindowSave = Tk()
         WindowSave.title("Saved Game")
         WindowSave.geometry("1000x1000")
@@ -182,23 +192,22 @@ class Jeu:
             line = f.readlines()
             for l in line:
                 updatedL = l.rstrip(l[-1]).split(':')
-                print(updatedL)
+                #print(updatedL)
                 ix = int(int(updatedL[0]) / self.size)
                 jx = int(updatedL[0]) % self.size
                 
-                print("ix : " + str(ix) + " jx : " + str(jx))
+                #print("ix : " + str(ix) + " jx : " + str(jx))
                 listI_J.append((ix,jx))
                 try:
                     iy = int(int(updatedL[1]) / self.size)
                     jy = int(updatedL[1]) % self.size
-                    print("iy : " ,iy , " jy : " , jy)
+                    #print("iy : " ,iy , " jy : " , jy)
                     listI_J.append((iy,jy))
                 except:
                     print("no second move")
-                                
-        GrilleSave = Grille(self.size, CanvasSave)
+        #print(sizeFile)    
+        GrilleSave = Grille(int(sizeFile), CanvasSave)
         GrilleSave.traceGrille(CanvasSave)
-        #CanvasSave.bind("<Button-1>", lambda event : self.ClickSave(buttonPressed))
         cpt = 0
         while cpt < len(listI_J):
             if(cpt%2 != 0):
@@ -206,44 +215,35 @@ class Jeu:
                 p = listI_J[cpt][0]
                 k = listI_J[cpt][1]
                 GrilleSave.getMatrice()[k][p].changeColor(CanvasSave,color)
-                print("if: ",k,p)
+                #print("if: ",k,p)
                 sleep(0.5)
             else:
                 try:
                     color = "#FF0000"
                     p = listI_J[cpt][0]
                     k = listI_J[cpt][1]
-                    print("else: ",k,p)
+                    #print("else: ",k,p)
                     GrilleSave.getMatrice()[k][p].changeColor(CanvasSave,color) 
                     sleep(0.5) 
                 except:
                     print("no second move")
             WindowSave.update()
             cpt += 1
-        #self.joueSave(listI_J,CanvasSave)
             
-       
+    def incTurnCount(self):
+        self.__turnCount += 1
         
-        
-    
-    def ClickSave(self,buttonPressed):
-        return not buttonPressed
-        
-    def writeToSave(self,x):
-        if self.__saveName =="":
-            messagebox.showinfo("ERROR", "Vous devez chosir les parametres de la menu premierement, fermez et relancer le jeu!")
-            self.Window.destroy()
-        else:
-            f = open(self.__saveName, "a")
-            if self.__turnCount%2==0:
-                f.write(str(x)+":")
-            else: 
-                f.write(str(x)+"\n")
-        f.close()
-            
-           
     def getSaves(self):
-        saveFiles = [f for f in listdir("saves/") if isfile(join("saves/", f))]
+        saveFiles = []
+        for i in range(1,12):
+            directorySearch = "saves/" + str(i) + "/"
+            #print(directorySearch)
+            for f in listdir(directorySearch):
+                if isfile(join(directorySearch, f)):
+                    #print(f)
+                    saveFiles.append(str(i) + "/" + f)
+                    #print(saveFiles)
+        #print(saveFiles)
         return saveFiles
     
     def getTurnCount(self):
