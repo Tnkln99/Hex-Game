@@ -25,6 +25,12 @@ class Graph:
 
     def getGraphB(self):
         return self.__graphB
+
+    def setGraphR(self, GR):
+        self.__graphR = GR.copy()
+
+    def setGraphB(self, GB):
+        self.__graphB = GB.copy()
  
     def initGraphR(self):
         graph = {}
