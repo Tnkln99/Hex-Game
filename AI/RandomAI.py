@@ -2,12 +2,15 @@ from AI import *
 
 class AlgoRandom(AI):
 
-	def __init__(self,size, grapheR, grapheB, color):
-		super().__init__(size, grapheR, grapheB, color) # appel de classe superieur
+	def __init__(self,size, color):
+		super().__init__(size, color) # appel de classe superieur
 
-	def algo(self):
+		self.name = "RandomAI"
+
+	def algo(self, GameGraph):
+
 		x = random.randint(0, self.size*self.size-1)
-		while x in self.GrapheComplet.keys():
+		while x in GameGraph.getGraphComplet().keys():
 			x = random.randint(0, self.size*self.size-1)
 
 		return x

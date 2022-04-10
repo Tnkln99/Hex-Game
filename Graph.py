@@ -1,3 +1,5 @@
+from Variables import *
+
 class Graph:
     
     def __init__(self,size):
@@ -11,6 +13,7 @@ class Graph:
         
         self.__graphR = self.initGraphR() #LA GRAPHE DE CONNEXTION ROUGE
         self.__graphB = self.initGraphB()
+
 
         
 
@@ -27,10 +30,13 @@ class Graph:
         return self.__graphB
 
     def setGraphR(self, GR):
-        self.__graphR = GR.copy()
+        self.__graphR = GR
 
     def setGraphB(self, GB):
-        self.__graphB = GB.copy()
+        self.__graphB = GB
+
+    def getGraphComplet(self):   # combine 2 graphe dans une seule graphe
+        return {**self.getGraphR(), **self.getGraphB()}
  
     def initGraphR(self):
         graph = {}
@@ -49,7 +55,7 @@ class Graph:
     
     def ajoutSommet(self, couleur, x): # couleur Bleu ou Rouge 
 
-        if (couleur == "#FF0000"): #rouge
+        if (couleur == ROUGE): #rouge
             self.__graphR[x] = []
         
             #converir l'indice k en deux coordonnes (x,y), pour verifier les depassements
@@ -105,7 +111,7 @@ class Graph:
 
 
 
-        elif(couleur == "#0000FF"): #bleu
+        elif(couleur == BLUE): #bleu
             self.__graphB[x] = []
 
             if x in self.__graphB[self.__Ba]:
@@ -166,10 +172,10 @@ class Graph:
         queue=[]
 
         # marquer le point de départ
-        if color == 'B':
+        if color == BLUE:
             queue.append(self.__Ba)
             visited[self.__Ba] = True
-        if color == 'R':
+        if color == ROUGE:
             queue.append(self.__Ra)
             visited[self.__Ra] = True
 
@@ -178,7 +184,7 @@ class Graph:
             #defiler
             n = queue.pop(0)
 
-            if color == 'B':
+            if color == BLUE:
                 # si sommet adjacence est le destination alors retourner True
                 if n == self.__Bb:
                     return True
@@ -189,7 +195,7 @@ class Graph:
                         queue.append(i)
                         visited[i] = True
 
-            if color == 'R':
+            if color == ROUGE:
                 # si sommet adjacence est le destination alors retourner True
                 if n == self.__Rb:
                     return True

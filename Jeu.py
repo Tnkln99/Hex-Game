@@ -21,7 +21,6 @@ class Jeu:
         
         self.menu()
         
-        #self.longueur = hexL * 2 * self.size
         self.Window = Tk()
         self.Window.title("Hex Game")
         self.Window.geometry("1400x1400")
@@ -43,10 +42,10 @@ class Jeu:
     def nextTurnHuman(self,event):
         color = ""
         if self.getTurnCount() % 2 == 0:
-            color = "#FF0000"
+            color = ROUGE
             self.Window.config(cursor="dot blue")
         else:
-            color = "#0000FF"
+            color = BLUE
             self.Window.config(cursor="dot red")
         #Récuperation des points cliqée
         pointCliquee = event.x, event.y
@@ -62,10 +61,10 @@ class Jeu:
                 self.notreGraph.ajoutSommet(color, pointIetJ)
                 #print(self.notreGraph.getGraphB())
                 #print(self.notreGraph.getGraphR())
-        if self.notreGraph.gagnant('R'):
+        if self.notreGraph.gagnant(ROUGE):
             messagebox.showinfo("Victoire","Le joueur rouge a gagné.")
             self.Window.destroy()
-        if self.notreGraph.gagnant('B'):
+        if self.notreGraph.gagnant(BLUE):
             messagebox.showinfo("Victoire","Le joueur bleu a gagné.")
             self.Window.destroy()
                 
