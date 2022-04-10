@@ -88,6 +88,6 @@ nombreJeu = 100
 size = 11
 
 AI1 = AlgoRandom(size, ROUGE)
-AI2 = MinMax(size, BLUE)
+AI2 = AlgoRandom(size, BLUE)
 
 simulation(AI1, AI2, nombreJeu, size)
