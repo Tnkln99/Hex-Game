@@ -2,7 +2,7 @@ from AI import *
 
 #backtrack taille devrait etre plus petit ou égale à 5
 
-
+#complexité: O(n^profondeur)
 class MinMax(AI):
 
 	def __init__(self,size, color):

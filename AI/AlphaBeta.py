@@ -1,16 +1,15 @@
 from AI import *
 
-#backtrack taille devrait etre plus petit ou égale à 5
 
 
-class MinMax(AI):
+class AlphaBeta(AI):
 
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
-		self.name = "MinMax"
+		self.name = "AlphaBeta"
 
 
-	def minmax(self, graph, depth, isMaximizing):
+	def alphaBeta(self, graph, depth, isMaximizing, alpha, beta):
 		#controler les condition gagnants
 		rcolor = None
 		if self.color == ROUGE:
