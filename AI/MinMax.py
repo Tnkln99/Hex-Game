@@ -8,6 +8,7 @@ class MinMax(AI):
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
 		self.name = "MinMax"
+		self.PROFONDEUR = 2
 
 
 	def minmax(self, graph, depth, isMaximizing):
@@ -21,6 +22,8 @@ class MinMax(AI):
 			return 1
 		if graph.gagnant(rcolor):
 			return -1
+		if depth == self.PROFONDEUR: # s'il n'y pas de gagnant et on arrive à la limite de profondeur
+			return 0
 
 		graphCopyc = Graph(self.size)
 		graphCopyc.setGraphR(graph.getGraphR())

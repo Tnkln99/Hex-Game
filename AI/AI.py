@@ -11,6 +11,7 @@ class AI:
 		self.name = None
 		self.color = color
 		self.size = size
+		#self.center = int((self.size * self.size)/2)
 
 	def algo(self, GameGraph):
 		raise NotImplementedError("""Cette fonction serre à rien car c'est la classe abstract
