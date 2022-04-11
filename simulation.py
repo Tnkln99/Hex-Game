@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append('AI')
 from RandomAI import *
-from MinMax import *
+from BackTrack import *
 
 def ploting(AI1, AI2, statistic):
 	plt.figure("jeu en temps", figsize=(12,6))
@@ -18,7 +18,7 @@ def ploting(AI1, AI2, statistic):
 
 	plt.xlabel("Numéro de Jeu")
 
-	plt.ylabel(" gagnant 0 si AI1 1 si AI2")
+	plt.ylabel(" gagnant 0 si " + AI1.name + " 1 si " + AI2.name)
 
 
 	# 2ème plot
@@ -84,10 +84,10 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 
 
-nombreJeu = 100
-size = 5
+nombreJeu = 10
+size = 4
 
 AI1 = AlgoRandom(size, ROUGE)
-AI2 = MinMax(size, BLUE)
+AI2 = BackTrack(size, BLUE)
 
 simulation(AI1, AI2, nombreJeu, size)
