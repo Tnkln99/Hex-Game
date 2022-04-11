@@ -3,7 +3,7 @@ from Grille import *
 from tkinter import *
 from Graph import *
 from tkinter import messagebox
-from os import listdir
+from os import listdir, mkdir
 from os.path import isfile, join
 from functools import partial
 from Variables import *
@@ -159,7 +159,13 @@ class Jeu:
         elif int(taille) > 11 or int(taille) < 2 or taille == None:
             messagebox.showinfo("ERROR", "Vous devez chosir une taille entre 2 et 11")
         else:
-            nom_save = "saves/" + str(taille) + "/" + nomFichier + ".txt"
+            dirPath = "saves/" + str(taille)
+            try:
+                mkdir(dirPath)
+            except:
+                print("file already exists")
+            nom_save = dirPath + "/" + nomFichier + ".txt"
+            print(nom_save)
             f = open(nom_save, "a")
             self.__saveName = nom_save
             self.size = int(taille)
@@ -240,7 +246,8 @@ class Jeu:
         
     def getSaves(self):
         saveFiles = []
-        for i in range(1,12):
+        savesDir = "saves/"
+        for i in listdir(savesDir):
             directorySearch = "saves/" + str(i) + "/"
             #print(directorySearch)
             for f in listdir(directorySearch):
