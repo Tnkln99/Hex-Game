@@ -30,10 +30,10 @@ class Graph:
         return self.__graphB
 
     def setGraphR(self, GR):
-        self.__graphR = GR
+        self.__graphR = GR.copy()
 
     def setGraphB(self, GB):
-        self.__graphB = GB
+        self.__graphB = GB.copy()
 
     def getGraphComplet(self):   # combine 2 graphe dans une seule graphe
         return {**self.getGraphR(), **self.getGraphB()}

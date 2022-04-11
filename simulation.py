@@ -46,17 +46,17 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 		while True:
 			a = AI1.algo(GameGraph)
-			GameGraph.ajoutSommet(ROUGE, a)
-			if GameGraph.gagnant(ROUGE):
+			GameGraph.ajoutSommet(AI1.color, a)
+			if GameGraph.gagnant(AI1.color):
 				statistic[i] = 0
-				print("rouge a gagné")
+				print(AI1.name + " a gagné")
 				break
 
 			a = AI2.algo(GameGraph)
-			GameGraph.ajoutSommet(BLUE, a)
-			if GameGraph.gagnant(BLUE):
+			GameGraph.ajoutSommet(AI2.color, a)
+			if GameGraph.gagnant(AI2.color):
 				statistic[i] = 1
-				print("blue a gagné")
+				print(AI2.name + " a gagné")
 				break
 
 		# ici on change l'AI qui commence en premier 
@@ -66,17 +66,17 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 		while True:
 			a = AI2.algo(GameGraph)
-			GameGraph.ajoutSommet(BLUE, a)
-			if GameGraph.gagnant(BLUE):
+			GameGraph.ajoutSommet(AI2.color, a)
+			if GameGraph.gagnant(AI2.color):
 				statistic[i+1] = 1
-				print("blue a gagné")
+				print(AI2.name + " a gagné")
 				break
 
 			a = AI1.algo(GameGraph)
-			GameGraph.ajoutSommet(ROUGE, a)
-			if GameGraph.gagnant(ROUGE):
+			GameGraph.ajoutSommet(AI1.color, a)
+			if GameGraph.gagnant(AI1.color):
 				statistic[i+1] = 0
-				print("rouge a gagné")
+				print(AI1.name + " a gagné")
 				break
 
 	ploting(AI1, AI2, statistic)
@@ -85,9 +85,9 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 
 nombreJeu = 100
-size = 11
+size = 5
 
 AI1 = AlgoRandom(size, ROUGE)
-AI2 = AlgoRandom(size, BLUE)
+AI2 = MinMax(size, BLUE)
 
 simulation(AI1, AI2, nombreJeu, size)

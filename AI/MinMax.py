@@ -21,21 +21,25 @@ class MinMax(AI):
 		if graph.gagnant(rcolor):
 			return -1
 
+		graphCopyc = Graph(self.size)
+		graphCopyc.setGraphR(graph.getGraphR())
+		graphCopyc.setGraphB(graph.getGraphB())
+
 		if isMaximizing:
 			bestScore = float('-inf')
 			for i in range(self.size*self.size):
-				if i not in graph.getGraphComplet():
-					graph.ajoutSommet(self.color, i)
-					score = self.minmax(graph, depth+1, False)
+				if i not in graphCopyc.getGraphComplet():
+					graphCopyc.ajoutSommet(self.color, i)
+					score = self.minmax(graphCopyc, depth+1, False)
 					bestScore = max(score, bestScore)
 			return bestScore
 
 		else:
 			bestScore = float('inf')
 			for i in range(self.size*self.size):
-				if i not in graph.getGraphComplet():
-					graph.ajoutSommet(rcolor, i)
-					score = self.minmax(graph, depth+1, True)
+				if i not in graphCopyc.getGraphComplet():
+					graphCopyc.ajoutSommet(rcolor, i)
+					score = self.minmax(graphCopyc, depth+1, True)
 					bestScore = min(score, bestScore)
 			return bestScore
 
@@ -44,11 +48,12 @@ class MinMax(AI):
 		graphCopy.setGraphR(GameGraph.getGraphR())
 		graphCopy.setGraphB(GameGraph.getGraphB())
 
-		bestScore = float('inf')
+		bestScore = float('-inf')
 		move = None
 
+
 		for i in range(self.size*self.size):
-			if i not in graphCopy.getGraphComplet():
+			if i not in graphCopy.getGraphComplet().keys():
 				graphCopy.ajoutSommet(self.color, i)
 				score = self.minmax(graphCopy, 0, False)
 				if score > bestScore:
