@@ -18,6 +18,7 @@ class MinMax(AI):
 			rcolor = BLUE
 		else:
 			rcolor = ROUGE
+			
 		if graph.gagnant(self.color):
 			return 1
 		if graph.gagnant(rcolor):
