@@ -88,34 +88,35 @@ class Jeu:
 
     def nextTurnHuman(self,event):
         color = ""
-        if self.getTurnCount() % 2 == 0:
-            color = ROUGE
-            self.Window.config(cursor="dot blue")
-        else:
-            color = BLUE
-            self.Window.config(cursor="dot red")
-        #Récuperation des points cliqée
-        pointCliquee = event.x, event.y
-        #trouver la hexagone associée aux points
-        hexagonCliquee = self.trouverHexagonCliqueHuman(pointCliquee)
-        if hexagonCliquee[0]:
-            hexCliquee = hexagonCliquee[1]
-            pointIetJ = hexagonCliquee[2]
-            if hexCliquee.estLibre():
-                hexCliquee.changeColor(self.myCanvas, color)
-                self.writeToSave(pointIetJ)
-                self.incTurnCount()
-                self.notreGraph.ajoutSommet(color, pointIetJ)
-                #print(self.notreGraph.getGraphB())
-                #print(self.notreGraph.getGraphR())
-        if self.notreGraph.gagnant(ROUGE):
-            messagebox.showinfo("Victoire","Le joueur rouge a gagné.")
-            self.Window.destroy()
-        elif self.notreGraph.gagnant(BLUE):
-            messagebox.showinfo("Victoire","Le joueur bleu a gagné.")
-            self.Window.destroy()
-        elif self.joueurs[(self.getTurnCount()%2)] == str(1):
-            self.Window.after(1000,self.nextTurnAi)
+        if self.joueurs[(self.getTurnCount()%2)] == str(0):
+            if self.getTurnCount() % 2 == 0:
+                color = ROUGE
+                self.Window.config(cursor="dot blue")
+            else:
+                color = BLUE
+                self.Window.config(cursor="dot red")
+            #Récuperation des points cliqée
+            pointCliquee = event.x, event.y
+            #trouver la hexagone associée aux points
+            hexagonCliquee = self.trouverHexagonCliqueHuman(pointCliquee)
+            if hexagonCliquee[0]:
+                hexCliquee = hexagonCliquee[1]
+                pointIetJ = hexagonCliquee[2]
+                if hexCliquee.estLibre():
+                    hexCliquee.changeColor(self.myCanvas, color)
+                    self.writeToSave(pointIetJ)
+                    self.incTurnCount()
+                    self.notreGraph.ajoutSommet(color, pointIetJ)
+                    #print(self.notreGraph.getGraphB())
+                    #print(self.notreGraph.getGraphR())
+            if self.notreGraph.gagnant(ROUGE):
+                messagebox.showinfo("Victoire","Le joueur rouge a gagné.")
+                self.Window.destroy()
+            elif self.notreGraph.gagnant(BLUE):
+                messagebox.showinfo("Victoire","Le joueur bleu a gagné.")
+                self.Window.destroy()
+            elif self.joueurs[(self.getTurnCount()%2)] == str(1):
+                self.Window.after(1000,self.nextTurnAi)
             
                 
         
