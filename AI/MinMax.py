@@ -8,7 +8,7 @@ class MinMax(AI):
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
 		self.name = "MinMax"
-		self.PROFONDEUR = 1
+		self.PROFONDEUR = size
 
 
 	def minmax(self, graph, depth, isMaximizing):
@@ -66,6 +66,9 @@ class MinMax(AI):
 					move = i
 
 		return move
+
+def getColor(self):
+    return self.color
 
 	
 

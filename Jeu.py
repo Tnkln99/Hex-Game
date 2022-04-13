@@ -1,3 +1,4 @@
+from asyncio import tasks
 from time import sleep
 from Grille import *
 from tkinter import *
@@ -7,6 +8,11 @@ from os import listdir, mkdir
 from os.path import isfile, join
 from functools import partial
 from Variables import *
+import threading
+import sys
+sys.path.append('AI')
+from RandomAI import *
+from MinMax import *
 #from Functions import *
 
 
@@ -21,23 +27,64 @@ class Jeu:
         
         self.menu()
         
+        
         self.Window = Tk()
         self.Window.title("Hex Game")
-        self.Window.geometry("1400x1400")
+        self.Window.geometry("1300x1300")
         self.Window.config(background='#FFFFFF')
 
-        self.myCanvas = Canvas(self.Window, width=1400, height=1400, bg="#FFFFFF")
+        self.myCanvas = Canvas(self.Window, width=1200, height=1200, bg="#FFFFFF")
         self.myCanvas.pack(pady = 100)
+        
         self.Window.withdraw()
-
-        self.commencer()
+        self.Window.mainloop()   
 
           
-    def commencer(self):
+    def commencer(self):  
+        self.notreGraph = Graph(self.size) # initialize de graphe
+        self.FirstGrille = Grille(self.size, self.myCanvas)
+        self.FirstGrille.traceGrille(self.myCanvas)
+        
+        
         self.Window.config(cursor="dot red")
+        
+        self.Window.after(1000,self.nextTurnAi())
+        
         self.myCanvas.bind("<Button-1>", self.nextTurnHuman)
-        self.Window.mainloop()
+    
             
+        
+    
+    def nextTurnAi(self):#buna type Ai eklenicek
+        if self.joueurs[(self.getTurnCount()%2)] == str(1):
+            if self.getTurnCount() % 2 == 0:
+                color = ROUGE
+                moveAi = self.jouer1.algo(self.notreGraph)
+            else:
+                color = BLUE
+                moveAi = self.jouer2.algo(self.notreGraph)
+            self.incTurnCount()
+            self.notreGraph.ajoutSommet(color,moveAi)
+            j = int(moveAi / self.size)
+            i = moveAi % self.size
+            self.FirstGrille.getMatrice()[i][j].changeColor(self.myCanvas,color)
+            self.writeToSave(moveAi)
+            if self.notreGraph.gagnant(ROUGE):
+                try:
+                    messagebox.showinfo("Victoire","Le Ai rouge a gagné.")
+                    self.Window.destroy()
+                except:
+                    print("fin du jeu")
+            elif self.notreGraph.gagnant(BLUE):
+                try:
+                    messagebox.showinfo("Victoire","Le Ai bleu a gagné.")
+                    self.Window.destroy()
+                except:
+                    print("fin du jeu")
+            elif self.joueurs[(self.getTurnCount()%2)] == str(1):
+                self.Window.after(1000,self.nextTurnAi)
+        
+        
 
     def nextTurnHuman(self,event):
         color = ""
@@ -64,9 +111,12 @@ class Jeu:
         if self.notreGraph.gagnant(ROUGE):
             messagebox.showinfo("Victoire","Le joueur rouge a gagné.")
             self.Window.destroy()
-        if self.notreGraph.gagnant(BLUE):
+        elif self.notreGraph.gagnant(BLUE):
             messagebox.showinfo("Victoire","Le joueur bleu a gagné.")
             self.Window.destroy()
+        elif self.joueurs[(self.getTurnCount()%2)] == str(1):
+            self.Window.after(1000,self.nextTurnAi)
+            
                 
         
     #trouver la hexagone associée aux points cliquées
@@ -115,7 +165,6 @@ class Jeu:
                 rb.select()
             rb.pack(side='right')
         Frame1.pack()
-
         Frame2 = Frame(FrameJoueur, pady=10)
         texteJoueur2 = Label(Frame2,text="Joueur 2 : ", fg='#0000FF',font="Arial 15")
         texteJoueur2.pack(side='left')
@@ -148,17 +197,39 @@ class Jeu:
         
         
 
-        b = Button(fenetreMenu,text="Jouer",command=lambda : self.playGame(fenetreMenu,fichier.get(1.0, "end-1c"),taille.get())) 
+        b = Button(fenetreMenu,text="Jouer",command=lambda : self.playGame(fenetreMenu,fichier.get(1.0, "end-1c"),taille.get(),var1.get(),var2.get())) 
         b.pack()
         
 
-    def playGame(self,menu, nomFichier, taille):
+        
+
+    def playGame(self, menu, nomFichier, taille, player1, player2): # mettre en place les configurations
+        print(player1)
+        print(player2)
         #print(taille)
         if(nomFichier ==""):
             messagebox.showinfo("ERROR", "Vous devez chosir un valid nom d'enregistrement")
         elif int(taille) > 11 or int(taille) < 2 or taille == None:
             messagebox.showinfo("ERROR", "Vous devez chosir une taille entre 2 et 11")
         else:
+            self.size = int(taille)
+            self.joueurs = [player1,player2]
+            if player1 == str(1):
+                #if type = random 
+                self.jouer1 = AlgoRandom(self.size, ROUGE)
+                #else:
+                #MinMax(size, ROUGE)
+            else:
+                self.jouer1 = "Player"
+            
+            if player2 == str(1):
+                #if type = random 
+                self.jouer2 = AlgoRandom(self.size, BLUE)
+                #else:
+                #MinMax(size, ROUGE)
+            else:
+                self.jouer2 = "Player"
+                
             dirPath = "saves/" + str(taille)
             try:
                 mkdir(dirPath)
@@ -168,13 +239,13 @@ class Jeu:
             print(nom_save)
             f = open(nom_save, "a")
             self.__saveName = nom_save
-            self.size = int(taille)
-            self.notreGraph = Graph(self.size) # initialize de graphe
-            self.FirstGrille = Grille(self.size, self.myCanvas)
-            self.FirstGrille.traceGrille(self.myCanvas)
+            
             self.Window.update()
             self.Window.deiconify()
+            
             menu.destroy()
+            self.commencer()
+
             
             
     def writeToSave(self,x):
