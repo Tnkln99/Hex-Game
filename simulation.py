@@ -85,7 +85,7 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 
 nombreJeu = 10
-size = 11
+size = 4
 
 AI1 = AlgoRandom(size, ROUGE)
 AI2 = MinMax(size, BLUE)

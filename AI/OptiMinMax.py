@@ -1,14 +1,12 @@
 from AI import *
 
-#backtrack taille devrait etre plus petit ou égale à 5
 
-#complexité: O(n^profondeur)
-class MinMax(AI):
+class OptiMinMax(AI):
 
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
-		self.name = "MinMax"
-		self.PROFONDEUR = 3
+		self.name = "OptiMinMax"
+		
 
 
 	def minmax(self, graph, depth, isMaximizing):
@@ -23,8 +21,6 @@ class MinMax(AI):
 			return 1
 		if graph.gagnant(rcolor):
 			return -1
-		if depth == self.PROFONDEUR: # s'il n'y pas de gagnant et on arrive à la limite de profondeur
-			return 0
 
 		graphCopyc = Graph(self.size)
 		graphCopyc.setGraphR(graph.getGraphR())
@@ -49,24 +45,34 @@ class MinMax(AI):
 			return bestScore
 
 	def algo(self, GameGraph):
-		graphCopy = Graph(self.size)
-		graphCopy.setGraphR(GameGraph.getGraphR())
-		graphCopy.setGraphB(GameGraph.getGraphB())
+		tour = len(GameGraph.getGraphComplet().keys()) -2
 
-		bestScore = float('-inf')
-		move = None
+		if self.size*self.size - tour > 90:
+			x = random.randint(0, self.size*self.size-1)
+			while x in GameGraph.getGraphComplet().keys():
+				x = random.randint(0, self.size*self.size-1)
+
+			return x
 
 
-		for i in range(self.size*self.size):
-			if i not in graphCopy.getGraphComplet().keys():
-				graphCopy.ajoutSommet(self.color, i)
-				score = self.minmax(graphCopy, 0, False)
-				if score > bestScore:
-					bestScore = score
-					move = i
+		else:
+			graphCopy = Graph(self.size)
+			graphCopy.setGraphR(GameGraph.getGraphR())
+			graphCopy.setGraphB(GameGraph.getGraphB())
 
-		return move
+			bestScore = float('-inf')
+			move = None
 
+
+			for i in range(self.size*self.size):
+				if i not in graphCopy.getGraphComplet().keys():
+					graphCopy.ajoutSommet(self.color, i)
+					score = self.minmax(graphCopy, 0, False)
+					if score > bestScore:
+						bestScore = score
+						move = i
+
+			return move
 	
 
 

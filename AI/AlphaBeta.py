@@ -32,25 +32,27 @@ class AlphaBeta(AI):
 
 		if isMaximizing:
 			bestScore = float('-inf')
+			score = 0
 			for i in range(self.size*self.size):
 				if i not in graphCopyc.getGraphComplet():
 					graphCopyc.ajoutSommet(self.color, i)
-					score = self.alphaBeta(graphCopyc, depth+1, False, alpha, beta)
+					score += self.alphaBeta(graphCopyc, depth+1, False, alpha, beta)
 					bestScore = max(score, bestScore)
 					alpha = max(alpha, bestScore)
-					if bestScore >= beta:
+					if alpha >= beta:
 						break #on coup la branche beta 
 			return bestScore
 
 		else:
 			bestScore = float('inf')
+			score = 0
 			for i in range(self.size*self.size):
 				if i not in graphCopyc.getGraphComplet():
 					graphCopyc.ajoutSommet(rcolor, i)
-					score = self.alphaBeta(graphCopyc, depth+1, True, alpha, beta)
+					score += self.alphaBeta(graphCopyc, depth+1, True, alpha, beta)
 					bestScore = min(score, bestScore)
 					beta = min(beta, bestScore)
-					if bestScore <= alpha:
+					if beta <= alpha:
 						break #on coup la branche alpha 
 			return bestScore
 

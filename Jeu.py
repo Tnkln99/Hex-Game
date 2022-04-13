@@ -13,7 +13,7 @@ import sys
 sys.path.append('AI')
 from RandomAI import *
 from MinMax import *
-#from Functions import *
+from AlphaBeta import *
 
 
 class Jeu:
@@ -33,7 +33,7 @@ class Jeu:
         self.Window.geometry("1300x1300")
         self.Window.config(background='#FFFFFF')
 
-        self.myCanvas = Canvas(self.Window, width=1200, height=1200, bg="#FFFFFF")
+        self.myCanvas = Canvas(self.Window, width=1300, height=1300, bg="#FFFFFF")
         self.myCanvas.pack(pady = 100)
         
         self.Window.withdraw()
@@ -217,7 +217,7 @@ class Jeu:
             self.joueurs = [player1,player2]
             if player1 == str(1):
                 #if type = random 
-                self.jouer1 = AlgoRandom(self.size, ROUGE)
+                self.jouer1 = MinMax(self.size, ROUGE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
@@ -225,7 +225,7 @@ class Jeu:
             
             if player2 == str(1):
                 #if type = random 
-                self.jouer2 = AlgoRandom(self.size, BLUE)
+                self.jouer2 = MinMax(self.size, BLUE)
                 #else:
                 #MinMax(size, ROUGE)
             else:

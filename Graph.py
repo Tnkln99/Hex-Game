@@ -13,9 +13,7 @@ class Graph:
         
         self.__graphR = self.initGraphR() #LA GRAPHE DE CONNEXTION ROUGE
         self.__graphB = self.initGraphB()
-
-
-        
+   
 
 
     
@@ -54,6 +52,9 @@ class Graph:
     
     
     def ajoutSommet(self, couleur, x): # couleur Bleu ou Rouge 
+
+        if x in self.getGraphComplet():
+            raise ValueError(x, " est déjà dans le grahe")
 
         if (couleur == ROUGE): #rouge
             self.__graphR[x] = []
@@ -210,8 +211,39 @@ class Graph:
 
     
 
+"""
 
-             
-    
+
+        self.__moves = []
+        self.__dernierJouerCouleur = None
+
+            self.__moves.append(x)
+            self.__dernierJouerCouleur = BLUE
+
+    def reverse(self):
+        if self.__moves == []:
+            raise ValueError("pas de move precedent")
+
+        x = self.__moves.pop()
+
+        if self.__dernierJouerCouleur == ROUGE:
+            for i in self.__graphR.keys():
+                if i == self.__Ra or i == self.__Rb:
+                    continue
+                if x in self.__graphR[i]:
+                    self.__graphR[i].remove(x)
+
+            del self.__graphR[x]
+
+        if self.__dernierJouerCouleur == BLUE:
+            for i in self.__graphB.keys():
+                if i == self.__Ba or i == self.__Bb:
+                    continue
+                if x in self.__graphB[i]:
+                    self.__graphB[i].remove(x)
+
+            del self.__graphB[x]
+
+    """
 
 
