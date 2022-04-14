@@ -40,12 +40,7 @@ class Jeu:
         self.Window.mainloop()   
 
           
-    def commencer(self):  
-        self.notreGraph = Graph(self.size) # initialize de graphe
-        self.FirstGrille = Grille(self.size, self.myCanvas)
-        self.FirstGrille.traceGrille(self.myCanvas)
-        
-        
+    def commencer(self):        
         self.Window.config(cursor="dot red")
         
         self.Window.after(1000,self.nextTurnAi())
@@ -165,10 +160,12 @@ class Jeu:
             if (val == 1):
                 rb.select()
             rb.pack(side='right')
+        
         Frame1.pack()
         Frame2 = Frame(FrameJoueur, pady=10)
         texteJoueur2 = Label(Frame2,text="Joueur 2 : ", fg='#0000FF',font="Arial 15")
         texteJoueur2.pack(side='left')
+            
 
         choix2 = [("Joueur",0),("IA",1)]
         var2 = StringVar()
@@ -217,7 +214,7 @@ class Jeu:
             self.joueurs = [player1,player2]
             if player1 == str(1):
                 #if type = random 
-                self.jouer1 = AlgoRandom(self.size, ROUGE)
+                self.jouer1 = MinMax(self.size, ROUGE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
@@ -225,7 +222,7 @@ class Jeu:
             
             if player2 == str(1):
                 #if type = random 
-                self.jouer2 = AlgoRandom(self.size, BLUE)
+                self.jouer2 = MinMax(self.size, BLUE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
@@ -240,6 +237,10 @@ class Jeu:
             print(nom_save)
             f = open(nom_save, "a")
             self.__saveName = nom_save
+            
+            self.notreGraph = Graph(self.size) # initialize de graphe
+            self.FirstGrille = Grille(self.size, self.myCanvas)
+            self.FirstGrille.traceGrille(self.myCanvas)
             
             self.Window.update()
             self.Window.deiconify()
