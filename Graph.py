@@ -209,6 +209,32 @@ class Graph:
 
         return False
 
+
+
+    def supprimeSommet(self, couleur, x):
+        if x not in self.getGraphComplet():
+            raise ValueError(x, " n'est pas dans le grahe")
+
+        if (couleur == ROUGE): #rouge
+            for i in self.__graphR.keys():
+                if i == self.__Ra or i == self.__Rb:
+                    continue
+                if x in self.__graphR[i]:
+                    self.__graphR[i].remove(x)
+
+            del self.__graphR[x]
+
+        if (couleur == BLUE): 
+            for i in self.__graphB.keys():
+                if i == self.__Ba or i == self.__Bb:
+                    continue
+                if x in self.__graphB[i]:
+                    self.__graphB[i].remove(x)
+
+            del self.__graphB[x]
+
+
+
     
 
 """
