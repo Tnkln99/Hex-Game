@@ -14,6 +14,7 @@ sys.path.append('AI')
 from RandomAI import *
 from MinMax import *
 from AlphaBeta import *
+from OptiAlphaBeta import *
 
 
 class Jeu:
@@ -55,9 +56,11 @@ class Jeu:
             if self.getTurnCount() % 2 == 0:
                 color = ROUGE
                 moveAi = self.jouer1.algo(self.notreGraph)
+                self.Window.config(cursor="dot red")
             else:
                 color = BLUE
                 moveAi = self.jouer2.algo(self.notreGraph)
+                self.Window.config(cursor="dot blue")
             self.incTurnCount()
             self.notreGraph.ajoutSommet(color,moveAi)
             j = int(moveAi / self.size)
@@ -214,7 +217,7 @@ class Jeu:
             self.joueurs = [player1,player2]
             if player1 == str(1):
                 #if type = random 
-                self.jouer1 = MinMax(self.size, ROUGE)
+                self.jouer1 = OptiAlphaBeta(self.size, ROUGE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
@@ -222,7 +225,7 @@ class Jeu:
             
             if player2 == str(1):
                 #if type = random 
-                self.jouer2 = MinMax(self.size, BLUE)
+                self.jouer2 = OptiAlphaBeta(self.size, BLUE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
