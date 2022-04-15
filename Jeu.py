@@ -14,6 +14,7 @@ sys.path.append('AI')
 from RandomAI import *
 from MinMax import *
 from AlphaBeta import *
+from RandomAlphaBeta import *
 from OptiAlphaBeta import *
 
 
@@ -217,7 +218,7 @@ class Jeu:
             self.joueurs = [player1,player2]
             if player1 == str(1):
                 #if type = random 
-                self.jouer1 = OptiAlphaBeta(self.size, ROUGE)
+                self.jouer1 = RandomAlphaBeta(self.size, ROUGE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
@@ -225,7 +226,7 @@ class Jeu:
             
             if player2 == str(1):
                 #if type = random 
-                self.jouer2 = OptiAlphaBeta(self.size, BLUE)
+                self.jouer2 = RandomAlphaBeta(self.size, BLUE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
