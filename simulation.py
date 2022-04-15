@@ -5,7 +5,10 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append('AI')
 from RandomAI import *
+from AlphaBeta import *
 from MinMax import *
+from RandomAlphaBeta import *
+from OptiAlphaBeta import *
 
 def ploting(AI1, AI2, statistic):
 	plt.figure("jeu en temps", figsize=(12,6))
@@ -84,10 +87,13 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 
 
-nombreJeu = 10
-size = 4
+nombreJeu = 30
+size = 6
 
 AI1 = AlgoRandom(size, ROUGE)
 AI2 = MinMax(size, BLUE)
+AI3 = AlphaBeta(size, ROUGE)
+AI4 = RandomAlphaBeta(size, BLUE)
+AI5 = OptiAlphaBeta(size, BLUE)
 
-simulation(AI1, AI2, nombreJeu, size)
+simulation(AI1, AI5, nombreJeu, size)
