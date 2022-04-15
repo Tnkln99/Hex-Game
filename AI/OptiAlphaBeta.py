@@ -3,12 +3,11 @@ from AI import *
 
 # minmax optimisé avec alpha beta
 
-class AlphaBeta(AI):
+class OptiAlphaBeta(AI):
 
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
-		self.name = "AlphaBeta"
-		self.PROFONDEUR = 5
+		self.name = "Opti AlphaBeta"
 
 
 	def alphaBeta(self, graph, depth, isMaximizing, alpha, beta):
@@ -23,11 +22,7 @@ class AlphaBeta(AI):
 			return 1
 		if graph.gagnant(rcolor):
 			return -1
-
-		if self.PROFONDEUR == depth:
-			return 0
 		
-
 
 
 		if isMaximizing:
@@ -58,22 +53,32 @@ class AlphaBeta(AI):
 
 	def algo(self, GameGraph):
 
-		bestScore = float('-inf')
-		move = None
-		alpha = float('-inf')
-		beta = float('inf')
+		tour = len(GameGraph.getGraphComplet().keys()) -2
 
-		for i in range(self.size*self.size):
-			if i not in GameGraph.getGraphComplet().keys():
-				GameGraph.ajoutSommet(self.color, i)
-				score = self.alphaBeta(GameGraph, 0, False, alpha, beta)
-				GameGraph.supprimeSommet(self.color, i)
-				if score > bestScore:
-					bestScore = score
-					move = i
+		if self.size*self.size - tour > 10:
+			x = random.randint(0, self.size*self.size-1)
+			while x in GameGraph.getGraphComplet().keys():
+				x = random.randint(0, self.size*self.size-1)
+
+			return x
+
+		else:
+			bestScore = float('-inf')
+			move = None
+			alpha = float('-inf')
+			beta = float('inf')
+
+			for i in range(self.size*self.size):
+				if i not in GameGraph.getGraphComplet().keys():
+					GameGraph.ajoutSommet(self.color, i)
+					score = self.alphaBeta(GameGraph, 0, False, alpha, beta)
+					GameGraph.supprimeSommet(self.color, i)
+					if score > bestScore:
+						bestScore = score
+						move = i
 
 
-		return move
+			return move
 
 	
 

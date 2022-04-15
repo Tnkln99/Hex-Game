@@ -18,6 +18,7 @@ class AI:
 				  cette AI devrait être herité de class AI avec une method 'algo' qui renvoit la valeur
 				  de case choisi puis vous pouvez selectioner votre algo par le menu de configuraation. """)
 		
+	
 	def connextionFort(): #controle s'il y a une connextion fort .:.
 		rcolor = None
 		if self.color == ROUGE:

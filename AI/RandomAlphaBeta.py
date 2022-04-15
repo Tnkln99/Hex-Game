@@ -3,12 +3,19 @@ from AI import *
 
 # minmax optimisé avec alpha beta
 
-class AlphaBeta(AI):
+class RandomAlphaBeta(AI):
 
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
-		self.name = "AlphaBeta"
-		self.PROFONDEUR = 5
+		self.name = "Random AlphaBeta"
+		self.possibilite = self.size * self.size
+
+
+	def setPossibilite(self, x):
+		self.possibilite = x
+
+	def getPossibilite(self):
+		return self.possibilite
 
 
 	def alphaBeta(self, graph, depth, isMaximizing, alpha, beta):
@@ -24,15 +31,27 @@ class AlphaBeta(AI):
 		if graph.gagnant(rcolor):
 			return -1
 
-		if self.PROFONDEUR == depth:
-			return 0
-		
+		tour = len(graph.getGraphComplet().keys()) -2
+		if self.size*self.size - tour == self.getPossibilite()-1:
+			self.setPossibilite(self.getPossibilite()-1)
 
+
+		poss = []
+
+		for i in range(self.possibilite):
+			x = random.randint(0, self.size*self.size-1)
+			while x in graph.getGraphComplet().keys():
+				x = random.randint(0, self.size*self.size-1)
+
+			if x not in poss:
+				poss.append(x)
+			else:
+				i-=1
 
 
 		if isMaximizing:
 			bestScore = float('-inf')
-			for i in range(self.size*self.size):
+			for i in poss:
 				if i not in graph.getGraphComplet():
 					graph.ajoutSommet(self.color, i)
 					score = self.alphaBeta(graph, depth+1, False, alpha, beta)
@@ -45,7 +64,7 @@ class AlphaBeta(AI):
 
 		else:
 			bestScore = float('inf')
-			for i in range(self.size*self.size):
+			for i in poss:
 				if i not in graph.getGraphComplet():
 					graph.ajoutSommet(rcolor, i)
 					score = self.alphaBeta(graph, depth+1, True, alpha, beta)
@@ -63,7 +82,24 @@ class AlphaBeta(AI):
 		alpha = float('-inf')
 		beta = float('inf')
 
-		for i in range(self.size*self.size):
+		tour = len(GameGraph.getGraphComplet().keys()) -2
+		if self.size*self.size - tour == self.getPossibilite()-1:
+			self.setPossibilite(self.getPossibilite()-1)
+
+
+		poss = []
+
+		for i in range(self.possibilite):
+			x = random.randint(0, self.size*self.size-1)
+			while x in GameGraph.getGraphComplet().keys():
+				x = random.randint(0, self.size*self.size-1)
+
+			if x not in poss:
+				poss.append(x)
+			else:
+				i-=1
+
+		for i in poss:
 			if i not in GameGraph.getGraphComplet().keys():
 				GameGraph.ajoutSommet(self.color, i)
 				score = self.alphaBeta(GameGraph, 0, False, alpha, beta)
@@ -77,3 +113,6 @@ class AlphaBeta(AI):
 
 	
 
+
+
+	
