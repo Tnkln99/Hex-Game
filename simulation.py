@@ -9,6 +9,7 @@ from AlphaBeta import *
 from MinMax import *
 from RandomAlphaBeta import *
 from OptiAlphaBeta import *
+from AlgoDebile import *
 
 def ploting(AI1, AI2, statistic):
 	plt.figure("jeu en temps", figsize=(12,6))
@@ -86,14 +87,75 @@ def simulation(AI1, AI2, nombreJeu, size):
 
 
 
+c1 = ROUGE
+c2 = BLUE
 
-nombreJeu = 30
-size = 6
+AI1 = None
+AI2 = None
+
+
+
+nombreJeu = int(input("Entrez le nombre de jeu à realiser: "))
+size = int(input("Entrez le taille de la grille de jeu: "))
+choix1 = int(input("""Choisez le premier AI :
+		1- AlgoRandom
+		2- MinMax
+		3- AlphaBeta
+		4- RandomAlphaBeta
+		5- OptiAlphaBeta
+		6- AlgoDebile
+->"""))
+if choix1 == 1:
+	AI1 = AlgoRandom(size, c1)
+elif choix1 == 2:
+	AI1 = MinMax(size, c1)
+elif choix1 == 3:
+	AI1 = AlphaBeta(size, c1)
+elif choix1 == 4:
+	AI1 = RandomAlphaBeta(size, c1)
+elif choix1 == 5:
+	AI1 = OptiAlphaBeta(size, c1)
+elif choix2 == 6:
+	AI2 = AlgoDebile(size, c2)
+else:
+	print("non definie")
+	exit()
+
+choix2 = int(input("""Choisez le deuxieme AI :
+		1- AlgoRandom
+		2- MinMax
+		3- AlphaBeta
+		4- RandomAlphaBeta
+		5- OptiAlphaBeta
+		6- AlgoDebile
+->"""))
+if choix2 == 1:
+	AI2 = AlgoRandom(size, c2)
+elif choix2 == 2:
+	AI2 = MinMax(size, c2)
+elif choix2 == 3:
+	AI2 = AlphaBeta(size, c2)
+elif choix2 == 4:
+	AI2 = RandomAlphaBeta(size, c2)
+elif choix2 == 6:
+	AI2 = AlgoDebile(size, c2)
+else:
+	print("non definie")
+	exit()
+
+print(AI1.name, " VS ", AI2.name)
+print("simulation commence... \n")
+simulation(AI1, AI2, nombreJeu, size)
+
+"""
+nombreJeu = 100
+size = 5
 
 AI1 = AlgoRandom(size, ROUGE)
 AI2 = MinMax(size, BLUE)
 AI3 = AlphaBeta(size, ROUGE)
-AI4 = RandomAlphaBeta(size, BLUE)
+AI4 = RandomAlphaBeta(size, ROUGE)
 AI5 = OptiAlphaBeta(size, BLUE)
 
-simulation(AI1, AI5, nombreJeu, size)
+simulation(AI4, AI5, nombreJeu, size)
+"""
