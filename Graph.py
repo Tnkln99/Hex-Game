@@ -54,7 +54,7 @@ class Graph:
     def ajoutSommet(self, couleur, x): # couleur Bleu ou Rouge 
 
         if x in self.getGraphComplet():
-            raise ValueError(x, " est déjà dans le grahe")
+            raise ValueError(x, " est déjà dans le graphe")
 
         if (couleur == ROUGE): #rouge
             self.__graphR[x] = []
@@ -213,7 +213,7 @@ class Graph:
 
     def supprimeSommet(self, couleur, x):
         if x not in self.getGraphComplet():
-            raise ValueError(x, " n'est pas dans le grahe")
+            raise ValueError(x, " n'est pas dans le graphe")
 
         if (couleur == ROUGE): #rouge
             for i in self.__graphR.keys():

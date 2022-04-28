@@ -58,6 +58,31 @@ class AlphaBeta(AI):
 
 	def algo(self, GameGraph):
 
+		rcolor = None
+		if self.color == ROUGE:
+			rcolor = BLUE
+		else:
+			rcolor = ROUGE
+
+		#si il y a une condition gagnant pour nous
+		for i in range(self.size * self.size):
+			if i not in GameGraph.getGraphComplet():
+				GameGraph.ajoutSommet(self.color, i)
+				if GameGraph.gagnant(self.color):
+					GameGraph.supprimeSommet(self.color, i)
+					return i
+				GameGraph.supprimeSommet(self.color, i)
+
+		#si il y a une condition gagnant pour adversaire on empeche
+		for i in range(self.size * self.size):
+			if i not in GameGraph.getGraphComplet():
+				GameGraph.ajoutSommet(rcolor, i)
+				if GameGraph.gagnant(rcolor):
+					GameGraph.supprimeSommet(rcolor, i)
+					return i
+				GameGraph.supprimeSommet(rcolor, i)
+
+
 		bestScore = float('-inf')
 		move = None
 		alpha = float('-inf')

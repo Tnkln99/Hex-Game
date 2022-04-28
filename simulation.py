@@ -9,7 +9,7 @@ from AlphaBeta import *
 from MinMax import *
 from RandomAlphaBeta import *
 from OptiAlphaBeta import *
-from AlgoDebile import *
+from AlphaHex import *
 
 def ploting(AI1, AI2, statistic):
 	plt.figure("jeu en temps", figsize=(12,6))
@@ -103,7 +103,7 @@ choix1 = int(input("""Choisez le premier AI :
 		3- AlphaBeta
 		4- RandomAlphaBeta
 		5- OptiAlphaBeta
-		6- AlgoDebile
+		6- AlphaHex
 ->"""))
 if choix1 == 1:
 	AI1 = AlgoRandom(size, c1)
@@ -115,8 +115,8 @@ elif choix1 == 4:
 	AI1 = RandomAlphaBeta(size, c1)
 elif choix1 == 5:
 	AI1 = OptiAlphaBeta(size, c1)
-elif choix2 == 6:
-	AI2 = AlgoDebile(size, c2)
+elif choix1 == 6:
+	AI1 = AlphaHex(size, c1)
 else:
 	print("non definie")
 	exit()
@@ -127,7 +127,7 @@ choix2 = int(input("""Choisez le deuxieme AI :
 		3- AlphaBeta
 		4- RandomAlphaBeta
 		5- OptiAlphaBeta
-		6- AlgoDebile
+		6- AlphaHex
 ->"""))
 if choix2 == 1:
 	AI2 = AlgoRandom(size, c2)
@@ -137,8 +137,10 @@ elif choix2 == 3:
 	AI2 = AlphaBeta(size, c2)
 elif choix2 == 4:
 	AI2 = RandomAlphaBeta(size, c2)
+elif choix2 == 5:
+	AI2 = OptiAlphaBeta(size, c2)
 elif choix2 == 6:
-	AI2 = AlgoDebile(size, c2)
+	AI2 = AlphaHex(size, c2)
 else:
 	print("non definie")
 	exit()

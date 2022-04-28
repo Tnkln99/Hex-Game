@@ -16,6 +16,7 @@ from MinMax import *
 from AlphaBeta import *
 from RandomAlphaBeta import *
 from OptiAlphaBeta import *
+from AlphaHex import *
 
 
 class Jeu:
@@ -32,11 +33,11 @@ class Jeu:
         
         self.Window = Tk()
         self.Window.title("Hex Game")
-        self.Window.geometry("1300x1300")
+        self.Window.geometry("1400x1400")
         self.Window.config(background='#FFFFFF')
 
-        self.myCanvas = Canvas(self.Window, width=1300, height=1300, bg="#FFFFFF")
-        self.myCanvas.pack(pady = 100)
+        self.myCanvas = Canvas(self.Window, width=1800, height=1800, bg="#FFFFFF")
+        self.myCanvas.pack(pady = 10)
         
         self.Window.withdraw()
         self.Window.mainloop()   
@@ -56,12 +57,12 @@ class Jeu:
         if self.joueurs[(self.getTurnCount()%2)] == str(1):
             if self.getTurnCount() % 2 == 0:
                 color = ROUGE
-                moveAi = self.jouer1.algo(self.notreGraph)
                 self.Window.config(cursor="dot red")
+                moveAi = self.jouer1.algo(self.notreGraph)
             else:
                 color = BLUE
-                moveAi = self.jouer2.algo(self.notreGraph)
                 self.Window.config(cursor="dot blue")
+                moveAi = self.jouer2.algo(self.notreGraph)
             self.incTurnCount()
             self.notreGraph.ajoutSommet(color,moveAi)
             j = int(moveAi / self.size)
@@ -218,7 +219,7 @@ class Jeu:
             self.joueurs = [player1,player2]
             if player1 == str(1):
                 #if type = random 
-                self.jouer1 = RandomAlphaBeta(self.size, ROUGE)
+                self.jouer1 = AlphaHex(self.size, ROUGE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
@@ -226,7 +227,7 @@ class Jeu:
             
             if player2 == str(1):
                 #if type = random 
-                self.jouer2 = RandomAlphaBeta(self.size, BLUE)
+                self.jouer2 = AlphaBeta(self.size, BLUE)
                 #else:
                 #MinMax(size, ROUGE)
             else:
