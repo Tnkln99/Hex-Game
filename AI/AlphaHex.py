@@ -1,4 +1,5 @@
 from AI import *
+from AlphaBeta import *
 
 
 class AlphaHex(AI):
@@ -116,6 +117,53 @@ class AlphaHex(AI):
 						chemins2.append(p)
 						break
 
+
+	# O((N + M) * T),    T = taille de graphe 
+	def extrairCheminsPlusCommuns(self, GameGraph, cheminCourts1, cheminCourts2, chemins1, chemins2):
+		maxi = 0
+		R = set(GameGraph.getGraphR().keys())
+		G = set(GameGraph.getGraphB().keys())
+		for p in cheminCourts1:
+			if self.color == ROUGE:
+				communTaille = len(R & set(p))
+				if communTaille > maxi:
+					chemins1.clear()
+					chemins1.append(p)
+					maxi = communTaille
+				if communTaille == maxi:
+					chemins1.append(p)
+
+			if self.color == BLUE:
+				communTaille = len(G & set(p))
+				if communTaille > maxi:
+					chemins1.clear()
+					chemins1.append(p)
+					maxi = communTaille
+				if communTaille == maxi:
+					chemins1.append(p)
+
+
+		maxi = 0
+		for p in cheminCourts2:
+			if self.color == ROUGE:
+				communTaille = len(G & set(p))
+				if communTaille > maxi:
+					chemins2.clear()
+					chemins2.append(p)
+					maxi = communTaille
+				if communTaille == maxi:
+					chemins2.append(p)
+
+			if self.color == BLUE:
+				communTaille = len(R & set(p))
+				if communTaille > maxi:
+					chemins2.clear()
+					chemins2.append(p)
+					maxi = communTaille
+				if communTaille == maxi:
+					chemins2.append(p)
+
+
 	# O(N + M) 
 	def intersection(self, chemins1, chemins2):
 		c1 = set()
@@ -163,6 +211,12 @@ class AlphaHex(AI):
 					return i
 				GameGraph.supprimeSommet(rcolor, i)
 
+		# on appelle Alpha Beta AI pour qu'il nous aide
+		tour = len(GameGraph.getGraphComplet().keys()) -2
+		if self.size*self.size - tour < 20:
+			AB = AlphaBeta(self.size, self.color)
+			return AB.algo(GameGraph)
+
 		# copie de graph de jeu
 		GraphCopy1 = Graph(self.size)
 		GraphCopy1.setGraphR(GameGraph.getGraphR())
@@ -199,28 +253,43 @@ class AlphaHex(AI):
 		self.extrairChemins(GameGraph, cheminCourts1, cheminCourts2, chemins1, chemins2)
 		
 		# etape 3: on extraire les chemin qui contient la même coup pour 2 jouers
-		# intersection des coups
+		# intersection des coups qui ne sont pas joué
 		intersection = self.intersection(chemins1, chemins2)
-		
-		#etape 4: 
+
+		# etape 4: on extraire aussi les chemins qui contiennent plus de coup
+		# deja joué puis on prends leur intersection des coups qui ne sont pas joué
+		chemins1P = []
+		chemins2P = []
+		self.extrairCheminsPlusCommuns(GameGraph, chemins1, chemins2, chemins1P, chemins2P)
+		intersectionP = self.intersection(chemins1P, chemins2P)
+
+		#etape 5: 
+		if intersectionP:
+			x = random.randint(0, len(intersectionP)-1)
+			return intersectionP[x]
 		if intersection:
 			x = random.randint(0, len(intersection)-1)
 			return intersection[x]
-		elif chemins2:
-			print("chem1")
-			x = random.randint(0, len(chemins2)-1)
-			y = random.randint(0, len(chemins2[x])-1)
-			while chemins2[x][y] in GameGraph.getGraphComplet().keys():
-				x = random.randint(0, len(chemins2)-1)
-				y = random.randint(0, len(chemins2[x])-1)
-			return chemins2[x][y]
-		else:
-			print("chem2")
-			x = random.randint(0, len(chemins1)-1)
-			y = random.randint(0, len(chemins1[x])-1)
-			while chemins1[x][y] in GameGraph.getGraphComplet().keys():
-				x = random.randint(0, len(chemins1)-1)
-				y = random.randint(0, len(chemins1[x])-1)
-			return chemins1[x][y]
+		elif chemins2P:
+			x = random.randint(0, len(chemins2P)-1)
+			y = random.randint(0, len(chemins2P[x])-1)
+			while chemins2P[x][y] in GameGraph.getGraphComplet().keys():
+				x = random.randint(0, len(chemins2P)-1)
+				y = random.randint(0, len(chemins2P[x])-1)
+			return chemins2P[x][y]			
+	
+		elif chemins1P:
+			x = random.randint(0, len(chemins1P)-1)
+			y = random.randint(0, len(chemins1P[x])-1)
+			while chemins1P[x][y] in GameGraph.getGraphComplet().keys():
+				x = random.randint(0, len(chemins1P)-1)
+				y = random.randint(0, len(chemins1P[x])-1)
+			return chemins1P[x][y]
 
+		#on joue random
+		else:
+			x = random.randint(0, self.size*self.size-1)
+			while x in GameGraph.getGraphComplet().keys():
+				x = random.randint(0, self.size*self.size-1)
 		
+			return x
