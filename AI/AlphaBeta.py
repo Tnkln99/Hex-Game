@@ -8,7 +8,7 @@ class AlphaBeta(AI):
 	def __init__(self,size, color):
 		super().__init__(size, color) # appel de classe superieur
 		self.name = "AlphaBeta"
-		self.PROFONDEUR = 5
+		self.PROFONDEUR = 6
 
 
 	def alphaBeta(self, graph, depth, isMaximizing, alpha, beta):
@@ -20,9 +20,9 @@ class AlphaBeta(AI):
 			rcolor = ROUGE
 
 		if graph.gagnant(self.color):
-			return 1
+			return 1 / depth
 		if graph.gagnant(rcolor):
-			return -1
+			return -1 / depth
 
 		if self.PROFONDEUR == depth:
 			return 0
