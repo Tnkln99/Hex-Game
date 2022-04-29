@@ -57,11 +57,11 @@ class Jeu:
         if self.joueurs[(self.getTurnCount()%2)] == str(1):
             if self.getTurnCount() % 2 == 0:
                 color = ROUGE
-                self.Window.config(cursor="dot red")
+                self.Window.config(cursor="dot blue")
                 moveAi = self.jouer1.algo(self.notreGraph)
             else:
                 color = BLUE
-                self.Window.config(cursor="dot blue")
+                self.Window.config(cursor="dot red")
                 moveAi = self.jouer2.algo(self.notreGraph)
             self.incTurnCount()
             self.notreGraph.ajoutSommet(color,moveAi)
