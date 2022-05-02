@@ -217,19 +217,32 @@ class Jeu:
         else:
             self.size = int(taille)
             self.joueurs = [player1,player2]
+            
             if player1 == str(1):
-                #if type = random 
+                """
+                POUR CHANGER LES AI 1
+                """
                 self.jouer1 = AlphaHex(self.size, ROUGE)
-                #else:
-                #MinMax(size, ROUGE)
+                #self.jouer1 = AlphaBeta(self.size, ROUGE)
+                #self.jouer1 = OptiAlphaBeta(self.size, ROUGE)
+                #self.jouer1 = RandomAlphaBeta(self.size, ROUGE)
+                #self.jouer1 = AlgoRandom(self.size, ROUGE)
+                #self.jouer1 = MinMax(self.size, ROUGE)
+                
             else:
                 self.jouer1 = "Player"
             
             if player2 == str(1):
-                #if type = random 
-                self.jouer2 = AlphaBeta(self.size, BLUE)
-                #else:
-                #MinMax(size, ROUGE)
+                """
+                POUR CHANGER LES AI 2
+                """
+                self.jouer2 = AlphaHex(self.size, BLUE)
+                #self.jouer2 = AlphaBeta(self.size, BLUE)
+                #self.jouer2 = OptiAlphaBeta(self.size, BLUE)
+                #self.jouer2 = RandomAlphaBeta(self.size, BLUE)
+                #self.jouer2 = AlgoRandom(self.size, BLUE)
+                #self.jouer2 = MinMax(self.size, BLUE)
+                
             else:
                 self.jouer2 = "Player"
                 
